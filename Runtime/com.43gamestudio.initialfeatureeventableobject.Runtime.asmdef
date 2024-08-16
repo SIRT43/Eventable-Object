@@ -1,0 +1,17 @@
+{
+    "name": "43GAMEStudio.InitialFeature.EventableObject.Runtime",
+    "rootNamespace": "FTGAMEStudio.InitialFramework",
+    "references": [
+        "GUID:5f4eb5fd6d7b8d54888393a402f48526",
+        "GUID:96e5c4d15653dd54187c38b36afddb17"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

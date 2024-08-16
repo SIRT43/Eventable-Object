@@ -1,0 +1,21 @@
+{
+  "name": "com.43gamestudio.initialfeatureeventableobject",
+  "version": "1.0.0",
+  "displayName": "Initial Feature - EventableObject",
+  "description": "\u53ef\u4e8b\u4ef6\u5bf9\u8c61\uff0c\u7528\u4e8e\u5b9e\u73b0\u5f00\u53d1\u4e2d\u7684\u7528\u6237\u4e0e\u573a\u666f\u7684\u4ea4\u4e92\u3002\n\u672c\u5305\u57fa\u4e8e Initial Feature - Input \u5904\u7406\u4e8b\u4ef6\u3002",
+  "keywords": [
+    "Initial",
+    "Feature",
+    "Event",
+    "Object"
+  ],
+  "author": {
+    "name": "43GAME Studio",
+    "email": "utsirt43@163.com"
+  },
+  "unity": "2019.1",
+  "dependencies": {
+    "com.43gamestudio.initialframework": "1.0.0",
+    "com.43gamestudio.initialfeatureinput": "1.0.0"
+  }
+}
