@@ -32,7 +32,7 @@ namespace FTGAMEStudio.InitialSolution.EventableObject
                 return;
             }
 
-            if (IsSelecting && SelectingTarget.gameObject != hitInfo.collider.gameObject) 
+            if (IsSelecting && SelectingTarget.gameObject != hitInfo.collider.gameObject)
                 DeselectObject();
 
             if (hitInfo.collider.TryGetComponent(out EventableBehaviour component))
