@@ -4,17 +4,17 @@ namespace FTGAMEStudio.InitialSolution.EventableObject
 {
     public interface IBeginHoldHandler
     {
-        public void OnBeginHold(Holder sponsor);
+        void OnBeginHold(Holder sponsor);
     }
 
     public interface IEndHoldHandler
     {
-        public void OnEndHold(Holder sponsor);
+        void OnEndHold(Holder sponsor);
     }
 
     public interface IHoldingHandler
     {
-        public void Holding(Holder sponsor);
+        void Holding(Holder sponsor);
     }
 
     [AddComponentMenu("Initial Solution/Eventable Object/Holder")]

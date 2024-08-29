@@ -4,12 +4,12 @@ namespace FTGAMEStudio.InitialSolution.EventableObject
 {
     public interface IBeginSelectHandler
     {
-        public void OnBeginSelect(Selecter sponsor);
+        void OnBeginSelect(Selecter sponsor);
     }
 
     public interface IEndSelectHandler
     {
-        public void OnEndSelect(Selecter sponsor);
+        void OnEndSelect(Selecter sponsor);
     }
 
     [AddComponentMenu("Initial Solution/Eventable Object/Selecter")]
