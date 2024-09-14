@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace FTGAMEStudio.InitialSolution.EventableObject
+namespace InitialSolution.EventableObject
 {
     public interface IBeginHoldHandler
     {
@@ -20,21 +20,6 @@ namespace FTGAMEStudio.InitialSolution.EventableObject
     [AddComponentMenu("Initial Solution/Eventable Object/Holder")]
     public class Holder : Selecter
     {
-#if UNITY_EDITOR
-        [Header("Editor")]
-        public EventableBehaviour inputHoldTarget;
-
-
-        protected override void OnValidate()
-        {
-            base.OnValidate();
-
-            if (inputHoldTarget == null && IsHolding) ReleaseObject();
-            else if (inputHoldTarget != null && !IsHolding) TryHoldObject(inputHoldTarget);
-        }
-#endif
-
-
         public bool IsHolding { get; private set; }
 
         private EventableBehaviour holdingTarget;
@@ -54,23 +39,26 @@ namespace FTGAMEStudio.InitialSolution.EventableObject
                     ReleaseObject();
                     return null;
                 }
+
+                if (holdingHandler == null) holdingHandler = HoldingTarget as IHoldingHandler;
                 return holdingHandler;
             }
-            private set => holdingHandler = value;
         }
 
 
-        protected virtual void UpdateHold() => HoldingHandler?.Holding(this);
+        protected virtual void UpdateHold()
+        {
+            if (!IsHolding) return;
+            HoldingHandler?.Holding(this);
+        }
 
 
         public virtual void HoldObject()
         {
             if (IsHolding || !IsSelecting) return;
+            IsHolding = true;
 
             HoldingTarget = SelectingTarget;
-            HoldingHandler = HoldingTarget as IHoldingHandler;
-
-            IsHolding = true;
 
             DeselectObject();
 
@@ -80,19 +68,19 @@ namespace FTGAMEStudio.InitialSolution.EventableObject
         public virtual void ReleaseObject()
         {
             if (!IsHolding) return;
+            IsHolding = false;
 
             if (HoldingTarget is IEndHoldHandler handler) handler.OnEndHold(this);
 
             HoldingTarget = null;
-            HoldingHandler = null;
-
-            IsHolding = false;
         }
 
-        public virtual void TryHoldObject(EventableBehaviour target)
+        public virtual bool TryHoldObject(EventableBehaviour target)
         {
-            TrySelectObject(target);
+            if (!TrySelectObject(target)) return false;
             HoldObject();
+
+            return true;
         }
 
         public virtual void ToggleHoldObject()

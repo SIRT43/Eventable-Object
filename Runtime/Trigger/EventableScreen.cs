@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace FTGAMEStudio.InitialSolution.EventableObject
+namespace InitialSolution.EventableObject
 {
     [RequireComponent(typeof(Camera))]
     public abstract class EventableScreen : EventableTrigger
@@ -23,7 +23,6 @@ namespace FTGAMEStudio.InitialSolution.EventableObject
                 ray = camera.ScreenPointToRay(Data.position);
 
                 UpdateTrigger();
-
                 HoldObject();
             }
             else ReleaseObject();

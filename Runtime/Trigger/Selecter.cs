@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace FTGAMEStudio.InitialSolution.EventableObject
+namespace InitialSolution.EventableObject
 {
     public interface IBeginSelectHandler
     {
@@ -15,19 +15,6 @@ namespace FTGAMEStudio.InitialSolution.EventableObject
     [AddComponentMenu("Initial Solution/Eventable Object/Selecter")]
     public class Selecter : MonoBehaviour
     {
-#if UNITY_EDITOR
-        [Header("Editor")]
-        public EventableBehaviour inputSelectTarget;
-
-
-        protected virtual void OnValidate()
-        {
-            if (inputSelectTarget == null && IsSelecting) DeselectObject();
-            else if (inputSelectTarget != null && !IsSelecting) TrySelectObject(inputSelectTarget);
-        }
-#endif
-
-
         public virtual bool IsSelecting { get; private set; }
 
         private EventableBehaviour selectingTarget;
@@ -41,9 +28,9 @@ namespace FTGAMEStudio.InitialSolution.EventableObject
         public virtual void SelectObject(EventableBehaviour target)
         {
             if (IsSelecting) return;
+            IsSelecting = true;
 
             SelectingTarget = target;
-            IsSelecting = true;
 
             if (SelectingTarget is IBeginSelectHandler handler) handler.OnBeginSelect(this);
         }
@@ -51,19 +38,21 @@ namespace FTGAMEStudio.InitialSolution.EventableObject
         public virtual void DeselectObject()
         {
             if (!IsSelecting) return;
+            IsSelecting = false;
 
             if (SelectingTarget is IEndSelectHandler handler) handler.OnEndSelect(this);
 
             SelectingTarget = null;
-            IsSelecting = false;
         }
 
-        public virtual void TrySelectObject(EventableBehaviour target)
+        public virtual bool TrySelectObject(EventableBehaviour target)
         {
-            if (IsSelecting) if (SelectingTarget == target) return;
+            if (IsSelecting) if (SelectingTarget == target) return false;
 
             DeselectObject();
             SelectObject(target);
+
+            return true;
         }
     }
 }

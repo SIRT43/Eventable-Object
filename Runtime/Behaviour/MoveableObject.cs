@@ -1,7 +1,7 @@
-using FTGAMEStudio.InitialFramework;
+using InitialFramework;
 using UnityEngine;
 
-namespace FTGAMEStudio.InitialSolution.EventableObject
+namespace InitialSolution.EventableObject
 {
     [AddComponentMenu("Initial Solution/Eventable Object/Moveable Object"), RequireComponent(typeof(Rigidbody))]
     public class MoveableObject : EventableBehaviour, IHoldingHandler, IBeginHoldHandler, IEndHoldHandler

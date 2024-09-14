@@ -1,9 +1,9 @@
 using UnityEngine;
 
-namespace FTGAMEStudio.InitialSolution.EventableObject
+namespace InitialSolution.EventableObject
 {
     /// <summary>
-    /// EventableBehaviour 是用于编写可事件对象的基类。
+    /// <see cref="EventableBehaviour"/> 是用于编写可事件对象的基类。
     /// </summary>
     [RequireComponent(typeof(Collider))]
     public abstract class EventableBehaviour : MonoBehaviour

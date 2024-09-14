@@ -1,11 +1,10 @@
 using UnityEngine;
 
-namespace FTGAMEStudio.InitialSolution.EventableObject
+namespace InitialSolution.EventableObject
 {
     /// <summary>
     /// 可事件对象触发器。
     /// </summary>
-    [AddComponentMenu("Initial Solution/Eventable Object/Eventable Trigger")]
     public abstract class EventableTrigger : Holder
     {
         [Header("Ray")]
@@ -38,19 +37,5 @@ namespace FTGAMEStudio.InitialSolution.EventableObject
             if (hitInfo.collider.TryGetComponent(out EventableBehaviour component))
                 SelectObject(component);
         }
-
-
-#if UNITY_EDITOR
-        protected override void OnValidate()
-        {
-            base.OnValidate();
-
-            if ((targetLayer & 4) == 4)
-            {
-                targetLayer &= ~4;
-                Debug.LogWarning("Layer 3 cannot be included because it is the default exclusion layer.");
-            }
-        }
-#endif
     }
 }
