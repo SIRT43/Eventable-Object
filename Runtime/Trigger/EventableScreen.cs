@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace InitialSolution.EventableObject
 {
@@ -10,7 +9,7 @@ namespace InitialSolution.EventableObject
         public override Ray Ray => ray;
 
 
-        protected abstract PointerEventData Data { get; }
+        protected abstract Vector2? ScreenPos { get; }
 
         private new Camera camera;
 
@@ -18,9 +17,9 @@ namespace InitialSolution.EventableObject
 
         private void Update()
         {
-            if (Data != null)
+            if (ScreenPos != null)
             {
-                ray = camera.ScreenPointToRay(Data.position);
+                ray = camera.ScreenPointToRay((Vector3)ScreenPos);
 
                 UpdateTrigger();
                 HoldObject();
