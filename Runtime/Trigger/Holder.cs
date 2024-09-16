@@ -21,48 +21,42 @@ namespace InitialSolution.EventableObject
     public class Holder : Selecter
     {
         public bool IsHolding { get; private set; }
+        public EventableBehaviour HoldingTarget { get; private set; }
 
-        private EventableBehaviour holdingTarget;
-        public EventableBehaviour HoldingTarget
-        {
-            get => holdingTarget == null ? null : holdingTarget;
-            set => holdingTarget = value;
-        }
+        private IHoldingHandler HoldingHandler { get; set; }
 
-        private IHoldingHandler holdingHandler;
-        public IHoldingHandler HoldingHandler
+
+
+        protected virtual bool UpdateHold()
         {
-            get
+            if (!IsHolding) return false;
+
+            if (HoldingTarget == null)
             {
-                if (HoldingTarget == null)
-                {
-                    ReleaseObject();
-                    return null;
-                }
-
-                if (holdingHandler == null) holdingHandler = HoldingTarget as IHoldingHandler;
-                return holdingHandler;
+                ReleaseObject();
+                return false;
             }
+
+            if (HoldingHandler == null) return false;
+
+            HoldingHandler.Holding(this);
+            return true;
         }
 
 
-        protected virtual void UpdateHold()
+        public virtual bool HoldObject()
         {
-            if (!IsHolding) return;
-            HoldingHandler?.Holding(this);
-        }
-
-
-        public virtual void HoldObject()
-        {
-            if (IsHolding || !IsSelecting) return;
+            if (IsHolding || !IsSelecting || SelectingTarget == null) return false;
             IsHolding = true;
 
             HoldingTarget = SelectingTarget;
+            HoldingHandler = SelectingTarget as IHoldingHandler;
+
+            if (SelectingTarget is IBeginHoldHandler handler) handler.OnBeginHold(this);
 
             DeselectObject();
 
-            if (HoldingTarget is IBeginHoldHandler handler) handler.OnBeginHold(this);
+            return true;
         }
 
         public virtual void ReleaseObject()
@@ -70,7 +64,7 @@ namespace InitialSolution.EventableObject
             if (!IsHolding) return;
             IsHolding = false;
 
-            if (HoldingTarget is IEndHoldHandler handler) handler.OnEndHold(this);
+            if (HoldingTarget != null && HoldingTarget is IEndHoldHandler handler) handler.OnEndHold(this);
 
             HoldingTarget = null;
         }
@@ -78,9 +72,8 @@ namespace InitialSolution.EventableObject
         public virtual bool TryHoldObject(EventableBehaviour target)
         {
             if (!TrySelectObject(target)) return false;
-            HoldObject();
 
-            return true;
+            return HoldObject();
         }
 
         public virtual void ToggleHoldObject()
@@ -90,10 +83,17 @@ namespace InitialSolution.EventableObject
         }
 
 
-        public override void SelectObject(EventableBehaviour target)
+        public override bool SelectObject(EventableBehaviour target)
         {
-            if (IsHolding) return;
-            base.SelectObject(target);
+            if (IsHolding) return false;
+
+            return base.SelectObject(target);
         }
+
+
+
+#if UNITY_EDITOR
+        protected override void OnValidate() => TryHoldObject(inputEventable);
+#endif
     }
 }

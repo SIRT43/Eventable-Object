@@ -16,23 +16,19 @@ namespace InitialSolution.EventableObject
     public class Selecter : MonoBehaviour
     {
         public virtual bool IsSelecting { get; private set; }
+        public virtual EventableBehaviour SelectingTarget { get; private set; }
 
-        private EventableBehaviour selectingTarget;
-        public virtual EventableBehaviour SelectingTarget
+
+        public virtual bool SelectObject(EventableBehaviour target)
         {
-            get => selectingTarget == null ? null : selectingTarget;
-            private set => selectingTarget = value;
-        }
-
-
-        public virtual void SelectObject(EventableBehaviour target)
-        {
-            if (IsSelecting) return;
+            if (IsSelecting || target == null) return false;
             IsSelecting = true;
 
             SelectingTarget = target;
 
             if (SelectingTarget is IBeginSelectHandler handler) handler.OnBeginSelect(this);
+
+            return true;
         }
 
         public virtual void DeselectObject()
@@ -40,19 +36,26 @@ namespace InitialSolution.EventableObject
             if (!IsSelecting) return;
             IsSelecting = false;
 
-            if (SelectingTarget is IEndSelectHandler handler) handler.OnEndSelect(this);
+            if (SelectingTarget != null && SelectingTarget is IEndSelectHandler handler) handler.OnEndSelect(this);
 
             SelectingTarget = null;
         }
 
         public virtual bool TrySelectObject(EventableBehaviour target)
         {
-            if (IsSelecting) if (SelectingTarget == target) return false;
+            if (IsSelecting && SelectingTarget == target) return false;
 
             DeselectObject();
-            SelectObject(target);
-
-            return true;
+            return SelectObject(target);
         }
+
+
+
+#if UNITY_EDITOR
+        [Header("Debug")]
+        public EventableBehaviour inputEventable;
+
+        protected virtual void OnValidate() => TrySelectObject(inputEventable);
+#endif
     }
 }

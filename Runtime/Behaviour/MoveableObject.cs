@@ -7,15 +7,17 @@ namespace InitialSolution.EventableObject
     public class MoveableObject : EventableBehaviour, IHoldingHandler, IBeginHoldHandler, IEndHoldHandler
     {
         [Header("Detection")]
-        [Min(0)] public float density = 1;
+        [Min(0.1f)] public float density = 1;
         [Range(0, 1)] public float inference = 0.5f;
 
         [Header("Holding")]
         public ForceMode forceMode = ForceMode.Acceleration;
         [Range(0, 200)] public float forceScale = 50;
 
+
         protected new Rigidbody rigidbody;
         protected int layerBackup;
+
 
         protected override void Awake()
         {
@@ -43,7 +45,7 @@ namespace InitialSolution.EventableObject
 
             rigidbody.velocity = Vector3.zero;
 
-            float length = collider.bounds.size.magnitude / 2;
+            float length = Collider.bounds.size.magnitude / 2;
             Probe probe = new(eventable.Ray.origin, eventable.Ray.direction, length);
 
             DetectionResult result = IFPhysics.Detection(probe, eventable.maxDistance, density, inference, eventable.targetLayer);

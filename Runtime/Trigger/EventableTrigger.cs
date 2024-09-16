@@ -11,6 +11,7 @@ namespace InitialSolution.EventableObject
         public LayerMask targetLayer = ~4;
         public float maxDistance = 5;
 
+
         /// <summary>
         /// 用于检测的射线，推荐使用只读或编译时常量。
         /// </summary>
