@@ -15,6 +15,7 @@
   },
   "unity": "2019.1",
   "dependencies": {
-    "com.43gamestudio.initialframework": "1.0.0"
+    "com.43gamestudio.initialframework": "1.0.0",
+    "com.unity.modules.physics": "1.0.0"
   }
 }
